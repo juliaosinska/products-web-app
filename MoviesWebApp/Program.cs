@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MoviesWebApp.Data;
+using MoviesWebApp.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddControllersWithViews();
 //injecting database context into my applicaton
 builder.Services.AddDbContext<MoviesDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("MoviesDbConnectionString")));
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 var app = builder.Build();
 
