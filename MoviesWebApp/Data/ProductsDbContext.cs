@@ -3,13 +3,13 @@ using MoviesWebApp.Models;
 
 namespace MoviesWebApp.Data
 {
-    public class MoviesDbContext : DbContext
+    public class ProductsDbContext : DbContext
     {
-        public MoviesDbContext(DbContextOptions options) : base(options)
+        public ProductsDbContext(DbContextOptions options) : base(options)
         {
         }
 
-        public DbSet<Movie> Movie { get; set; }
+        public DbSet<Product> Product { get; set; }
 
         public DbSet<Category> Category { get; set; }
     }

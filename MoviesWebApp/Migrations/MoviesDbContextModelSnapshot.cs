@@ -10,7 +10,7 @@ using MoviesWebApp.Data;
 
 namespace MoviesWebApp.Migrations
 {
-    [DbContext(typeof(MoviesDbContext))]
+    [DbContext(typeof(ProductsDbContext))]
     partial class MoviesDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -22,83 +22,86 @@ namespace MoviesWebApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CategoryMovie", b =>
+            modelBuilder.Entity("CategoryProduct", b =>
                 {
-                    b.Property<int>("categoriesid")
+                    b.Property<int>("CategoriesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("moviesid")
+                    b.Property<int>("ProductsId")
                         .HasColumnType("int");
 
-                    b.HasKey("categoriesid", "moviesid");
+                    b.HasKey("CategoriesId", "ProductsId");
 
-                    b.HasIndex("moviesid");
+                    b.HasIndex("ProductsId");
 
-                    b.ToTable("CategoryMovie");
+                    b.ToTable("CategoryProduct");
                 });
 
             modelBuilder.Entity("MoviesWebApp.Models.Category", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("name")
+                    b.Property<int>("IsDeleted")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("MoviesWebApp.Models.Movie", b =>
+            modelBuilder.Entity("MoviesWebApp.Models.Product", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("creationDate")
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("creatorUserId")
+                    b.Property<int>("CreatorUserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("imageUrl")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("isDeleted")
+                    b.Property<int>("IsDeleted")
                         .HasColumnType("int");
 
-                    b.Property<string>("title")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.ToTable("Movie");
+                    b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("CategoryMovie", b =>
+            modelBuilder.Entity("CategoryProduct", b =>
                 {
                     b.HasOne("MoviesWebApp.Models.Category", null)
                         .WithMany()
-                        .HasForeignKey("categoriesid")
+                        .HasForeignKey("CategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MoviesWebApp.Models.Movie", null)
+                    b.HasOne("MoviesWebApp.Models.Product", null)
                         .WithMany()
-                        .HasForeignKey("moviesid")
+                        .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

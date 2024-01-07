@@ -23,10 +23,10 @@
                 @foreach (var category in Model)
                 {
                     <tr>
-                        <td>@category.id</td>
-                        <td>@category.name</td>
+                        <td>@category.Id</td>
+                        <td>@category.Name</td>
                         <td>
-                            <a asp-area="" asp-controller="AdminCategory" asp-action="Edit" asp-route-id="@category.id">Edit</a>
+                            <a asp-area="" asp-controller="AdminCategory" asp-action="Edit" asp-route-id="@category.Id">Edit</a>
                         </td>
                     </tr>
                 }

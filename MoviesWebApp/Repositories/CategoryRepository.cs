@@ -6,29 +6,29 @@ namespace MoviesWebApp.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private readonly MoviesDbContext moviesDbContext;
+        private readonly ProductsDbContext productsDbContext;
 
-        public CategoryRepository(MoviesDbContext moviesDbContext)
+        public CategoryRepository(ProductsDbContext productsDbContext)
         {
-            this.moviesDbContext = moviesDbContext;
+            this.productsDbContext = productsDbContext;
         }
 
         public async Task<Category> AddAsync(Category category)
         {
-            await moviesDbContext.Category.AddAsync(category);
-            await moviesDbContext.SaveChangesAsync();
+            await productsDbContext.Category.AddAsync(category);
+            await productsDbContext.SaveChangesAsync();
 
             return category;
         }
 
         public async Task<Category?> DeleteAsync(int id)
         {
-            var existingCategory = await moviesDbContext.Category.FindAsync(id);
+            var existingCategory = await productsDbContext.Category.FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == 0);
 
             if (existingCategory != null)
             {
-                moviesDbContext.Category.Remove(existingCategory);
-                await moviesDbContext.SaveChangesAsync();
+                existingCategory.IsDeleted = 1; 
+                await productsDbContext.SaveChangesAsync();
 
                 return existingCategory;
             }
@@ -38,23 +38,23 @@ namespace MoviesWebApp.Repositories
 
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
-            return await moviesDbContext.Category.ToListAsync();
+            return await productsDbContext.Category.Where(x => x.IsDeleted == 0).ToListAsync();
         }
 
         public Task<Category?> GetAsync(int id)
         {
-            return moviesDbContext.Category.FirstOrDefaultAsync(x => x.id == id);
+            return productsDbContext.Category.FirstOrDefaultAsync(x => x.Id == id && x.IsDeleted == 0);
         }
 
         public async Task<Category?> UpdateAsync(Category category)
         {
-            var existingCategory = await moviesDbContext.Category.FindAsync(category.id);
+            var existingCategory = await productsDbContext.Category.FirstOrDefaultAsync(x => x.Id == category.Id && x.IsDeleted == 0);
 
             if (existingCategory != null) { }
             {
-                existingCategory.name = category.name;
+                existingCategory.Name = category.Name;
 
-                await moviesDbContext.SaveChangesAsync();
+                await productsDbContext.SaveChangesAsync();
 
                 return existingCategory;
             }

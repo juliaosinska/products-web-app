@@ -1,8 +1,8 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\julka\\source\\repos\\Movies\\MoviesWebApp\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\MoviesWebApp.bundle.scp.css",
-      "PackagePath": "staticwebassets\\MoviesWebApp.bundle.scp.css"
+      "Id": "C:\\Users\\julka\\source\\repos\\Movies\\MoviesWebApp\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\ProductsWebApp.bundle.scp.css",
+      "PackagePath": "staticwebassets\\ProductsWebApp.bundle.scp.css"
     },
     {
       "Id": "C:\\Users\\julka\\source\\repos\\Movies\\MoviesWebApp\\wwwroot\\css\\site.css",
@@ -245,20 +245,20 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
-      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.MoviesWebApp.Microsoft.AspNetCore.StaticWebAssets.props",
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.ProductsWebApp.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },
     {
-      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.MoviesWebApp.props",
-      "PackagePath": "build\\MoviesWebApp.props"
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.ProductsWebApp.props",
+      "PackagePath": "build\\ProductsWebApp.props"
     },
     {
-      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.MoviesWebApp.props",
-      "PackagePath": "buildMultiTargeting\\MoviesWebApp.props"
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.ProductsWebApp.props",
+      "PackagePath": "buildMultiTargeting\\ProductsWebApp.props"
     },
     {
-      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.MoviesWebApp.props",
-      "PackagePath": "buildTransitive\\MoviesWebApp.props"
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.ProductsWebApp.props",
+      "PackagePath": "buildTransitive\\ProductsWebApp.props"
     }
   ],
   "ElementsToRemove": []

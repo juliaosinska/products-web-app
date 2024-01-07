@@ -11,7 +11,7 @@ using MoviesWebApp.Data;
 
 namespace MoviesWebApp.Migrations
 {
-    [DbContext(typeof(MoviesDbContext))]
+    [DbContext(typeof(ProductsDbContext))]
     [Migration("20231120150403_Initial Migration")]
     partial class InitialMigration
     {

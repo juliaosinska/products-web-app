@@ -2,11 +2,13 @@
 {
     public class Category
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public ICollection<Movie> movies { get; set; }
+        public int IsDeleted { get; set; }
+
+        public ICollection<Product> Products { get; set; }
 
     }
 }

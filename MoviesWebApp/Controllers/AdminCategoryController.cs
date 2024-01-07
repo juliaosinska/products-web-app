@@ -1,19 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesWebApp.Data;
 using MoviesWebApp.Models;
 using MoviesWebApp.Models.ViewModels;
 using MoviesWebApp.Repositories;
+using ProductsWebApp.Models.ViewModels;
 
 namespace MoviesWebApp.Controllers
 {
     public class AdminCategoryController : Controller
     {
         private readonly ICategoryRepository categoryRepository;
+        private readonly IMapper mapper;
 
-        public AdminCategoryController(ICategoryRepository categoryRepository)
+        public AdminCategoryController(ICategoryRepository categoryRepository, IMapper mapper)
         {
             this.categoryRepository = categoryRepository;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -27,10 +31,7 @@ namespace MoviesWebApp.Controllers
         public async Task<IActionResult> Add(AddCategoryRequest addCategoryRequest)
         {
             //mapowanie AddCategoryRequest do Category Domain model
-            var category = new Category
-            {
-                name = addCategoryRequest.Name
-            };
+            var category = mapper.Map<AddCategoryRequest, Category>(addCategoryRequest);
 
             await categoryRepository.AddAsync(category);
 
@@ -54,11 +55,8 @@ namespace MoviesWebApp.Controllers
 
             if (category != null)
             {
-                var editCategoryRequest = new EditCategoryRequest
-                {
-                    id = category.id,
-                    name = category.name
-                };
+                var editCategoryRequest = mapper.Map<EditCategoryRequest>(category);
+
                 return View(editCategoryRequest);
             }
 
@@ -68,13 +66,10 @@ namespace MoviesWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditCategoryRequest editCategoryRequest)
         {
-            var category = new Category
-            {
-                id = editCategoryRequest.id,
-                name = editCategoryRequest.name
-            };
+            var existingCategory = await categoryRepository.GetAsync(editCategoryRequest.Id);
+            mapper.Map(editCategoryRequest, existingCategory);
 
-            var updatedCategory = await categoryRepository.UpdateAsync(category);
+            var updatedCategory = await categoryRepository.UpdateAsync(existingCategory);
 
             if (updatedCategory != null)
             {
@@ -85,13 +80,13 @@ namespace MoviesWebApp.Controllers
                 //error
             }
 
-            return RedirectToAction("Edit", new { id = editCategoryRequest.id });
+            return RedirectToAction("Edit", new { id = editCategoryRequest.Id, name = editCategoryRequest.Name });
         }
 
         [HttpPost]
         public async Task <IActionResult> Delete(EditCategoryRequest editCategoryRequest)
         {
-            var deletedCategory = await categoryRepository.DeleteAsync(editCategoryRequest.id);
+            var deletedCategory = await categoryRepository.DeleteAsync(editCategoryRequest.Id);
 
             if (deletedCategory != null)
             {
@@ -100,7 +95,7 @@ namespace MoviesWebApp.Controllers
             }
 
             //powiadomienie o niepowodzeniu
-            return RedirectToAction("Edit", new { id = editCategoryRequest.id });
+            return RedirectToAction("Edit", new { id = editCategoryRequest.Id });
         }
     }
 }
