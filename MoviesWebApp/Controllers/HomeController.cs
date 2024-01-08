@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MoviesWebApp.Models;
+using MoviesWebApp.Repositories;
+using ProductsWebApp.Models.ViewModels;
+using ProductsWebApp.Repositories;
 using System.Diagnostics;
 
 namespace MoviesWebApp.Controllers
@@ -7,15 +10,29 @@ namespace MoviesWebApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IProductRepository productRepository;
+        private readonly ICategoryRepository categoryRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, ICategoryRepository categoryRepository)
         {
             _logger = logger;
+            this.productRepository = productRepository;
+            this.categoryRepository = categoryRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var products = await productRepository.GetAllAsync();
+
+            var categories = await categoryRepository.GetAllAsync();
+
+            var model = new HomeViewModel
+            {
+                Products = products,
+                Categories = categories
+            };
+
+            return View(model);
         }
 
         public IActionResult Privacy()
