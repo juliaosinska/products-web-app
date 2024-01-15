@@ -103,12 +103,15 @@ namespace ProductsWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteComment(int commentId)
         {
+            //jesli uzytkownik jest zalogowany
             if (signInManager.IsSignedIn(User))
             {
+                //pobieramy komentarz do usuniecia
                 var commentToDelete = await productCommentRepository.GetAsync(commentId);
 
                 if (commentToDelete != null)
                 {
+                    //moze usunac komentarz tylko jego autor lub admin
                     var userId = userManager.GetUserId(User);
                     if (commentToDelete.UserId == Guid.Parse(userId) || User.IsInRole("Admin"))
                     {
