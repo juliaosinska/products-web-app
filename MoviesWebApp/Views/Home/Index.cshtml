@@ -4,6 +4,7 @@
     ViewData["Title"] = "Home Page";
 }
 
+<!-- informacje o aplikacji -->
 <div class="container col-xxl-8 px-4 py-5">
     <div class="row align-items-center" g-5 py-5>
         <div class="col-12 col-lg-6"> 
@@ -13,6 +14,41 @@
             <p class="lead">
                 ProductsWebApp is the home to many different products. Join us and see which of them catch your eye!
             </p>
+
+            <!-- filtrowanie po kategorii - combobox -->
+            <div class="row justify-content-start mb-3">
+                <div class="col-12">
+                    <label for="categorySelect" class="form-label">Select a Category:</label>
+                    <select id="categorySelect" class="form-select" onchange="location = this.value;">
+                        <option value="@Url.Action("Index", "Home")" selected="@(Model.SelectedCategoryName == "All Categories")">All Categories</option>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@Url.Action("Index", "Home", new { categoryId = category.Id })" selected="@(Model.SelectedCategoryName == category.Name)">
+                                @category.Name
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <!-- wyszukiwanie po nazwie -->
+            <div class="row justify-content-start">
+                <div class="col-12">
+                    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+                    {
+                        <div class="mb-3">
+                            <label for="searchString" class="form-label">Search:</label>
+                            <div class="input-group">
+                                @Html.TextBox("searchString", Model.SearchString, new { @class = "form-control", placeholder = "Search for products..." })
+                                <button type="submit" class="btn btn-outline-primary">Search</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+        <!-- zdjecie -->
         </div>
         <div class="col-12 col-lg-6">
             <img src="https://images.pexels.com/photos/392018/pexels-photo-392018.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -22,22 +58,7 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-6 d-flex">
-            @if (Model != null && Model.Categories.Any())
-            {
-                foreach (var category in Model.Categories)
-                {
-                    <span class="badge bg-dark me-1">
-                        @category.Name
-                    </span>
-                }
-            }
-        </div>
-    </div>
-</div>
-
+<!-- wyswietlenie produktow -->
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-6">
@@ -69,8 +90,26 @@
                                                 >Read More</a>
                     </div>
                 }
+
+                <div class="text-center">
+                    @if (Model.PageNumber > 1)
+                    {
+                        <a class="btn btn-secondary" asp-action="Index" asp-route-page="@(Model.PageNumber - 1)">Previous</a>
+                    }
+
+                    @for (int i = 1; i <= Model.TotalProducts / Model.PageSize + 1; i++)
+                    {
+                        <a class="btn btn-primary @(i == Model.PageNumber ? "active" : "")" asp-action="Index" asp-route-page="@i">@i</a>
+                    }
+
+                    @if (Model.PageNumber < Model.TotalProducts / Model.PageSize + 1)
+                    {
+                        <a class="btn btn-secondary" asp-action="Index" asp-route-page="@(Model.PageNumber + 1)">Next</a>
+                    }
+                </div>
             }
 
         </div>
     </div>
 </div>
+

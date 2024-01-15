@@ -15,7 +15,7 @@ namespace ProductsWebApp.Models.ViewModels
 
         public DateTime CreationDate { get; set; }
 
-        public int CreatorUserId { get; set; }
+        public Guid CreatorUserId { get; set; }
 
         public string ImageUrl { get; set; }
 

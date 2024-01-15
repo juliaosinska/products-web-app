@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MoviesWebApp.Models;
 using MoviesWebApp.Repositories;
 using ProductsWebApp.Models.ViewModels;
 using ProductsWebApp.Repositories;
 using System.Diagnostics;
+using System.Linq;
 
 namespace MoviesWebApp.Controllers
 {
@@ -20,20 +22,54 @@ namespace MoviesWebApp.Controllers
             this.categoryRepository = categoryRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, int? categoryId, int? page)
         {
             var products = await productRepository.GetAllAsync();
-
             var categories = await categoryRepository.GetAllAsync();
 
+            //domyslna wartosc comboboca
+            string selectedCategoryName = "All Categories";
+
+            if (categoryId.HasValue)
+            {
+                //filtrowanie po kategorii
+                products = products.Where(p => p.Categories.Any(c => c.Id == categoryId.Value)).ToList();
+
+                //pobranie nazwy wybranej kategorii
+                var selectedCategory = categories.FirstOrDefault(c => c.Id == categoryId.Value);
+                if (selectedCategory != null)
+                {
+                    selectedCategoryName = selectedCategory.Name;
+                }
+            }
+
+            //wyszukiwanie po nazwie
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(p => p.Title.Contains(searchString)).ToList();
+            }
+
+            //stronicowanie
+            int pageSize = 5;
+            //domyslna strona - 1
+            int pageNumber = (page ?? 1);
+            var paginatedProducts = products.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            //tworzymy nowy view model
             var model = new HomeViewModel
             {
-                Products = products,
-                Categories = categories
+                Products = paginatedProducts,
+                Categories = categories,
+                SearchString = searchString,
+                SelectedCategoryName = selectedCategoryName,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalProducts = products.Count()
             };
 
             return View(model);
         }
+
 
         public IActionResult Privacy()
         {

@@ -1,6 +1,5 @@
 ﻿@model List<MoviesWebApp.Models.Product>
 
-
 @{
 }
 <div class="bg-secondary bg-opacity-10 py-2">
@@ -10,6 +9,7 @@
 </div>
 
 <div class="container py-5">
+
     @if (Model != null && Model.Any())
     {
         <table class="table">
@@ -52,3 +52,4 @@
         <p>No products found!</p>
     }
 </div>
+

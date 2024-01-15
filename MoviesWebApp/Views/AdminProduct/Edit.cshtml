@@ -53,7 +53,6 @@
             <select class="form-select" asp-items="@Model.Categories"
                     asp-for="SelectedCategories">
             </select>
-
         </div>
 
         <div class="mb-3 d-flex">
@@ -75,3 +74,18 @@
         <p>No product found!</p>
     }
 </div>
+
+@section Scripts{
+    @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+    {
+        <script>
+            alert("@ViewBag.SuccessMessage");
+        </script>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <script>
+            alert("@ViewBag.ErrorMessage");
+        </script>
+    }
+}

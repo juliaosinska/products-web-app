@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Identity.Client;
@@ -10,18 +12,22 @@ using ProductsWebApp.Repositories;
 
 namespace MoviesWebApp.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminProductController : Controller
     {
         private readonly ICategoryRepository categoryRepository;
         private readonly IProductRepository productRepository;
         private readonly IMapper mapper;
+		private readonly UserManager<IdentityUser> userManager;
 
-        public AdminProductController(ICategoryRepository categoryRepository, IProductRepository productRepository, IMapper mapper)
+		public AdminProductController(ICategoryRepository categoryRepository, IProductRepository productRepository, IMapper mapper,
+			UserManager<IdentityUser> userManager)
         {
             this.categoryRepository = categoryRepository;
             this.productRepository = productRepository;
             this.mapper = mapper;
-        }
+			this.userManager = userManager;
+		}
 
         [HttpGet]
         public async Task<IActionResult> Add()
@@ -43,10 +49,11 @@ namespace MoviesWebApp.Controllers
             //mapowanie view model to domain model
             var product = mapper.Map<AddProductRequest, Product>(addProductRequest);
 
-            product.CreationDate = DateTime.UtcNow;
+            product.CreationDate = DateTime.Now;
+            product.CreatorUserId = Guid.Parse(userManager.GetUserId(User));
 
-            //mapowanie wybranych categories
-            var selectedCategories = new List<Category>();
+			//mapowanie wybranych categories (maja sie wyswitlac tylko te wybrane)
+			var selectedCategories = new List<Category>();
             foreach(var selectedCategoryId in addProductRequest.SelectedCategories)
             {
                 var selectedCategoryIdAsInt = int.Parse(selectedCategoryId);
@@ -77,12 +84,13 @@ namespace MoviesWebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            //pobranie informacji o produkcie, ktory admin chce zedytowac + informacji o dostepnych kategorii
             var product = await productRepository.GetAsync(id);
             var categoriesDomainModel = await categoryRepository.GetAllAsync();
-
-            //mapowanie domain model do view model
+            
             if (product != null)
             {
+                //mapowanie domain model do view model
                 var editProductRequest = mapper.Map<EditProductRequest>(product);
                 
                 //pobranie id przypisanych aktualnie kategorii
@@ -131,11 +139,11 @@ namespace MoviesWebApp.Controllers
 
             if (updatedProduct != null)
             {
-                //sukces
+                ViewBag.SuccessMessage = "Aktualizacja produktu zakonczona pomyslnie!";
                 return RedirectToAction("Edit");
             }
-            //error
-             return RedirectToAction("Edit");
+            ViewBag.ErrorMessage = "Blad podczas edycji produktu. Sprobuj ponownie.";
+            return RedirectToAction("Edit");
         }
 
         [HttpPost]
@@ -145,10 +153,11 @@ namespace MoviesWebApp.Controllers
 
             if (deletedProduct != null)
             {
-                //sukces
+                ViewBag.SuccessMessage = "Pomyslnie usunieto produkt!";
                 return RedirectToAction("List");
             }
 
+            ViewBag.ErrorMessage = "Blad podczas usuwania produktu. Sprobuj ponownie.";
             return RedirectToAction("Edit", new { id = editProductRequest.Id });
         }
     }

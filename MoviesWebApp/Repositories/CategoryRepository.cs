@@ -27,6 +27,7 @@ namespace MoviesWebApp.Repositories
 
             if (existingCategory != null)
             {
+                //zmiana znacznika na "usuniety"
                 existingCategory.IsDeleted = 1; 
                 await productsDbContext.SaveChangesAsync();
 
@@ -38,6 +39,7 @@ namespace MoviesWebApp.Repositories
 
         public async Task<IEnumerable<Category>> GetAllAsync()
         {
+            //pobranie kategorii ktore nie sa usuniete
             return await productsDbContext.Category.Where(x => x.IsDeleted == 0).ToListAsync();
         }
 
@@ -59,7 +61,6 @@ namespace MoviesWebApp.Repositories
                 return existingCategory;
             }
             return null;
-
 
         }
     }

@@ -18,6 +18,7 @@ namespace ProductsWebApp.Repositories
         {
             await productsDbContext.AddAsync(product);
             await productsDbContext.SaveChangesAsync();
+
             return product;
         }
 
@@ -27,6 +28,7 @@ namespace ProductsWebApp.Repositories
 
             if (existingProduct != null)
             {
+                //zmiana znacznika na "usuniety"
                 existingProduct.IsDeleted = 1;
                 await productsDbContext.SaveChangesAsync();
                 return existingProduct;
@@ -36,6 +38,7 @@ namespace ProductsWebApp.Repositories
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
+            //pobranie nieusunietych produktow
             return await productsDbContext.Product.Include(x=> x.Categories).Where(x => x.IsDeleted == 0).ToListAsync();
         }
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesWebApp.Data;
@@ -9,6 +10,7 @@ using ProductsWebApp.Models.ViewModels;
 
 namespace MoviesWebApp.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminCategoryController : Controller
     {
         private readonly ICategoryRepository categoryRepository;
@@ -42,7 +44,7 @@ namespace MoviesWebApp.Controllers
         [ActionName("List")]
         public async Task<IActionResult> List()
         {
-            //używamy dbcontext aby odczytac kategorie
+            //uzywamy dbcontext aby odczytac wszystkie kategorie
             var category = await categoryRepository.GetAllAsync();
 
             return View(category);
@@ -51,10 +53,12 @@ namespace MoviesWebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            //pobranie informacji o kategorii, ktora admin chce zedytowac
             var category = await categoryRepository.GetAsync(id);
 
             if (category != null)
             {
+                //mapowanie domain model na viewmodel
                 var editCategoryRequest = mapper.Map<EditCategoryRequest>(category);
 
                 return View(editCategoryRequest);
@@ -73,12 +77,12 @@ namespace MoviesWebApp.Controllers
 
             if (updatedCategory != null)
             {
-                //sukces
-            }
+				ViewBag.SuccessMessage = "Aktualizacja kategorii zakonczona pomyslnie!";
+			}
             else
             {
-                //error
-            }
+				ViewBag.ErrorMessage = "Blad podczas edycji kategorii. Sprobuj ponownie.";
+			}
 
             return RedirectToAction("Edit", new { id = editCategoryRequest.Id, name = editCategoryRequest.Name });
         }
@@ -90,11 +94,11 @@ namespace MoviesWebApp.Controllers
 
             if (deletedCategory != null)
             {
-                //sukces
+                ViewBag.SuccessMessage = "Pomyslnie usunieto kategorie!";
                 return RedirectToAction("List");
             }
 
-            //powiadomienie o niepowodzeniu
+            ViewBag.ErrorMessage = "Błąd podczas usuwania kategorii. Sprobuj ponownie.";
             return RedirectToAction("Edit", new { id = editCategoryRequest.Id });
         }
     }

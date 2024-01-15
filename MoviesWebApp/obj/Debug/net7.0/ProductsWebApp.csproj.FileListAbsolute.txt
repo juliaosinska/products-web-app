@@ -76,3 +76,9 @@ C:\Users\julka\source\repos\Movies\MoviesWebApp\obj\Debug\net7.0\ProductsWebApp.
 C:\Users\julka\source\repos\Movies\MoviesWebApp\obj\Debug\net7.0\ref\ProductsWebApp.dll
 C:\Users\julka\source\repos\Movies\MoviesWebApp\bin\Debug\net7.0\AutoMapper.dll
 C:\Users\julka\source\repos\Movies\MoviesWebApp\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\julka\source\repos\Movies\MoviesWebApp\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\julka\source\repos\Movies\MoviesWebApp\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\julka\source\repos\Movies\MoviesWebApp\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\julka\source\repos\Movies\MoviesWebApp\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\julka\source\repos\Movies\MoviesWebApp\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\julka\source\repos\Movies\MoviesWebApp\bin\Debug\net7.0\Microsoft.Extensions.Options.dll

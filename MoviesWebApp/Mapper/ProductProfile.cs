@@ -3,6 +3,7 @@ using MoviesWebApp.Models.ViewModels;
 using MoviesWebApp.Models;
 using ProductsWebApp.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ProductsWebApp.Models.Domain;
 
 namespace ProductsWebApp.Mapper
 {
@@ -19,6 +20,6 @@ namespace ProductsWebApp.Mapper
 
             CreateMap<EditProductRequest, Product>();
 
-        }
+		}
     }
 }
