@@ -1,4 +1,5 @@
-﻿using ProductsWebApp.Models.Domain;
+﻿using MoviesWebApp.Models;
+using ProductsWebApp.Models.Domain;
 
 namespace ProductsWebApp.Repositories
 {
@@ -7,5 +8,9 @@ namespace ProductsWebApp.Repositories
 		Task<ProductComment> AddAsync(ProductComment productComment);
 
 		Task<IEnumerable<ProductComment>> GetCommentsByProductIdAsync(int productId);
+        
+		Task<ProductComment> DeleteAsync(int productId);
+
+		Task<ProductComment> GetAsync(int id);
 	}
 }

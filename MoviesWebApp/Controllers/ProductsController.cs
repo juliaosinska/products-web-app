@@ -99,5 +99,25 @@ namespace ProductsWebApp.Controllers
 
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteComment(int commentId)
+        {
+            if (signInManager.IsSignedIn(User))
+            {
+                var commentToDelete = await productCommentRepository.GetAsync(commentId);
+
+                if (commentToDelete != null)
+                {
+                    var userId = userManager.GetUserId(User);
+                    if (commentToDelete.UserId == Guid.Parse(userId) || User.IsInRole("Admin"))
+                    {
+                        await productCommentRepository.DeleteAsync(commentToDelete.Id);
+                    }
+                }
+				return RedirectToAction("Index", "Products", new { id = commentToDelete.ProductId });
+			}
+            return NotFound();
+        }
     }
 }

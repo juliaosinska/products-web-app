@@ -93,5 +93,36 @@ namespace ProductsWebApp.Controllers
             }
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Guid id, UserViewModel request)
+        {
+            var user = await userManager.FindByIdAsync(id.ToString());
+
+            if (user != null)
+            {
+                var currentRoles = await userManager.GetRolesAsync(user);
+                var identityResult = await userManager.RemoveFromRolesAsync(user, currentRoles);
+
+                if (identityResult.Succeeded)
+                {
+                    var rolesToAdd = new List<string> { "User" };
+
+                    if (request.AdminRoleCheckbox)
+                    {
+                        rolesToAdd.Add("Admin");
+                    }
+
+                    identityResult = await userManager.AddToRolesAsync(user, rolesToAdd);
+
+                    if (identityResult != null && identityResult.Succeeded)
+                    {
+                        return RedirectToAction("List", "AdminUsers");
+                    }
+                }
+            }
+
+            return View();
+        }
     }
 }
